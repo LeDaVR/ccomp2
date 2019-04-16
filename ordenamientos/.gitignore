@@ -1,0 +1,8 @@
+bin/
+obj/
+*.cbp
+*.layout
+*.depend
+*.o
+prueba
+*.exe
