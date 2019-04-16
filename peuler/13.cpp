@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 using namespace std;
 int tamanio(string cadena){
 	int cantidad=0;
@@ -7,18 +8,38 @@ int tamanio(string cadena){
 	}
 	return cantidad;
 }
-int suma(string numero,int particion){
+void suma(string numero,int particion){
 	int cn=tamanio(numero)/particion;
 	string arr[cn];
-	int digitos=particion;
-	particion=0;
-	for(int i=0;i<cn;i++,particion+=50){
+	int digitos=0;
+	for(int i=0;i<cn;i++,digitos+=50){
 		for(int j=0;j<50;j++){
-			arr[i]+=numero[j+particion];
+			arr[i]+=numero[j+digitos];
 		}
 	}
-	for(int i=digitos-1;i>=0;i--)
-		
+	string result;
+	int carrear=0;
+
+	for(int i=particion-1;i>=0;i--){
+		for(int j=0;j<cn;j++){
+			string temp=arr[j];
+			carrear+=static_cast<int>(temp[i])-48;
+		}
+		stringstream ss;
+		ss << carrear%10;
+		result+=ss.str();
+		carrear/=10;
+	}
+	while(carrear>0){
+		stringstream gg;
+		gg << carrear%10;
+		result+= gg.str();
+		carrear/=10;
+	}
+	int longitud=tamanio(result);
+	for(int i=longitud-1;i>longitud-11;i--){
+		cout<<result[i];
+	}
 }
 int main(){
 	string numero="37107287533902102798797998220837590246510135740250"
