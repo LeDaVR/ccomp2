@@ -2,17 +2,34 @@
 using namespace std;
 
 //función para obtener el mayor elemento del arreglo
-int getMayor(int arr[], int len){
-	int max = arr[0];
+int getMayor(int *arr, int len){
+	int nummayor=*(arr+0);
+	for(int i=0;i<len;i++)
+		if(*(arr+i)>nummayor)
+			nummayor=*(arr+i);
+	return nummayor;
+	/*int max = arr[0];
 	for (int i = 1; i < len; i++)
 		if (arr[i] > max)
 			max = arr[i];
-	return max;
+	return max;*/
 }
  
 // Count sort of arr[].
-void countSort(int arr[], int len, int dig){
-
+void countSort(int *arr, int len, int exp){
+	int respuesta[len],digitos[10]={0};
+	for(int i=0;i<len;i++)
+		digitos[(*(arr+i)/exp)%10]++;
+	for(int i=0;i<9;i++)
+		digitos[i+1]+=digitos[i];
+	for(int i=len-1;i>=0;i--){
+		respuesta[digitos[(*(arr+i)/exp)%10]-1]=*(arr+i);
+		digitos[(*(arr+i)/exp)%10]--;
+	}
+	for(int i=0;i<len;i++)
+		arr[i]=respuesta[i];
+	
+/*
 	int radix[len], count[10] = {0};
 	// cuenta la cantidad de veces que los dígitos de los números en la misma jerarquía 
 	for (int i = 0; i < len; i++)
@@ -27,16 +44,23 @@ void countSort(int arr[], int len, int dig){
 	}
 	// actualizar los valores de arr[] pero que ya están ordenados en radix[]
 	for (int i = 0; i < len; i++)
-		arr[i] = radix[i];
+		arr[i] = radix[i];*/
 }
 
 
-void radixsort(int arr[], int len){
-	int dig, max;
+void radixsort(int *arr, int len){
+	int exp,mayor;
+	mayor=getMayor(arr,len);
+	for(exp=1;mayor/exp>0;exp*=10){
+		countSort(arr,len,exp);
+	}
+	
+	
+	/*int dig, max;
 	max = getMayor(arr, len); //variable con el mayor valor del arreglo
 	// llama a countSort para que ordene los números dependiendo de la posición de los digitos 
 	for (dig = 1; max/dig > 0; dig *= 10)
-		countSort(arr, len, dig);
+		countSort(arr, len, dig);*/
 }
 
 int main()
