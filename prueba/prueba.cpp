@@ -1,6 +1,7 @@
-
 #include <iostream>
+#include <fstream>
 using namespace std;
+
 
 template<class T>
 struct DinamicArray{
@@ -88,12 +89,17 @@ Editor::Editor(){
 
 
 void Editor::draw(){
-	for(int i=0;i<vertices.getSize();i++){
+	
+	stringstream is;
+	
+	
+	for(int i=0;i<indices.getSize();i++){
 		if(!(i%3)){
-			cout<<endl;
+			cout<<") (";
 		}
-			
-		cout<<vertices.arr[i]<<" ";
+		if(!(i%240)&&i>0)
+			cout<<endl;
+		cout<<indices.arr[i]<<",";
 	}
 }
 
@@ -108,10 +114,12 @@ Editor::~Editor(){
 
 int main(){
 	Editor editor;
+	ofstream write("escritura.txt");
+	string  a;
 //	cout<<editor.vertices.getSize();
 	/*int a=500;
 	float b=float(a);
 	cout<<b;*/
-	cout<<editor.indices.getSize();
-	//editor.draw();
+
+	editor.draw();
 }
