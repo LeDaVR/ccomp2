@@ -2,10 +2,20 @@
 using namespace std;
 
 
+template <class T>
+class Point;
 
 template <class T>
-struct Point{
+ostream& operator <<(ostream& o,Point<T> p){
+    o<<"("<< p.x <<","<<p.y<<")";
+    return o;
+}
+
+template <class T>
+class Point{
+private:
     T x,y;
+public:
     Point(){}
     Point(T x,T y) {
         this->x=x;
@@ -22,22 +32,22 @@ struct Point{
     bool operator !=(Point<T>& a){
         return (x!=a.x || y!=a.y);
     }
+    friend ostream& operator << <>(ostream& o,Point<T> p);
 };
 
 template <class T>
-ostream& operator <<(ostream& o,Point<T> p){
-    o<<"("<< p.x <<","<<p.y<<")";
-    return o;
-}
+class Lista;
 
 template <class T>
-struct Nodo{
-    T data;
-    Nodo<T>* next;
-    Nodo(){
-        //data=NULL;
-        next=NULL;
-    }
+class Nodo{
+    private:
+        friend class Lista<T>;
+        T data;
+        Nodo<T>* next;
+    public:
+        Nodo(){
+            next=NULL;
+        }
 };
 
 template <class T>
