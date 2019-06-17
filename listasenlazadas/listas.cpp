@@ -1,50 +1,78 @@
 #include <iostream>
+#include "point.h"
 using namespace std;
-
-
+//-----------------------------NODO Y LISTA --------------------------------------------
+template <class T>
+class Nodo;
 
 template <class T>
-struct Point{
-    T x,y;
-    Point(){}
-    Point(T x,T y) {
-        this->x=x;
-        this->y=y;
-    }
-    bool operator <(Point<T>& a){
-        return x<a.x;
-    }
+class Lista;
 
-    bool operator ==(Point<T>& a){
-        return (x==a.x && y==a.y);
-    }
-
-    bool operator !=(Point<T>& a){
-        return (x!=a.x || y!=a.y);
-    }
-};
-
-template <class T>
-ostream& operator <<(ostream& o,Point<T> p){
-    o<<"("<< p.x <<","<<p.y<<")";
+template<class T>
+ostream& operator <<(ostream& o,Nodo<T>& a){
+    o << a.data;
     return o;
 }
 
 template <class T>
-struct Nodo{
-    T data;
-    Nodo<T>* next;
-    Nodo(){
-        //data=NULL;
-        next=NULL;
-    }
+class Nodo{
+    private:
+        friend class Lista<T>;
+        T data;
+        Nodo<T>* next;
+    public:
+        Nodo(){
+            next=NULL;
+        }
+        friend ostream& operator << <>(ostream& o,Nodo<T>& a);
+
 };
 
 template <class T>
 class Lista{
-        Nodo<T>* first;
-        int size;
     public:
+        class iterator{
+            Nodo<T>* pos;
+            public:
+            iterator(Nodo<T>*_pos=NULL) : pos(_pos){}
+
+            T& operator*(){ 
+                return pos->data; 
+            }
+ 
+			bool operator!=(const iterator& it){ 
+                return this->pos != it.pos; 
+            }
+ 
+			iterator operator++(int){ 
+                pos = pos->next; 
+                return *this; 
+            }
+
+            iterator& operator=(iterator a){
+                this->pos=a.pos;
+                return *this;
+            }
+
+            iterator operator+(int a){
+                iterator temp;
+                temp.pos=this->pos;
+                for(int i=0;i<a;i++){
+                    temp.pos=temp.pos->next;
+                }
+                return temp;
+            }
+
+            iterator& operator+=(int a){
+                for(int i=0;i<a;i++){
+                    this->pos=this->pos->next;
+                }
+                return *this;
+            }
+ 
+        };
+
+
 
         Lista(){
             first=NULL;
@@ -127,6 +155,14 @@ class Lista{
             return size;
         }
 
+        const iterator begin() const {
+            return iterator(first);
+        }
+
+        const iterator end() const {
+            return iterator(NULL);
+        }
+        
         ~Lista(){
             Nodo<T>* aux1=first;
             Nodo<T>* aux2;
@@ -136,30 +172,14 @@ class Lista{
                 aux1=aux2;
             }
         }
+
+    private:
+        Nodo<T>* first;
+        int size;
 };
 
-
+//-----------MAIN----------------------
 int main(){
-    cout<< "------------LISTA DE NUMEROS-------------"<<endl;
-    Lista<int> mylist;
-    cout << "AGREGANDO NODOS" << endl;
-    mylist.add(10);
-    mylist.add(5);
-    mylist.add(15);
-    mylist.add(13);
-
-    cout<<"IMPRIMIENDO NODOS" << endl;
-    mylist.printlist();
-    
-    mylist.search(10);
-    mylist.search(12);
-    mylist.remove(5);
-    mylist.remove(12);
-    mylist.remove(13);
-    cout<<"IMPRIMIENDO NODOS" << endl;
-    mylist.printlist();
-
-    cout <<"Size : "<< mylist.getSize()<<endl;
     Lista< Point<int> > puntos;
     
     puntos.add( Point<int>(2,3) );
@@ -173,5 +193,23 @@ int main(){
     puntos.remove(Point<int> (5,6));
 
     puntos.printlist();
+
+    Lista<Point<int> >::iterator a = puntos.begin();
+    cout << *a <<endl;
+    
+    cout<< *(a+1) <<endl;
+    a+=1;
+    cout << *a << endl;
+
+    a=puntos.begin();
+    a=a+1;
+    cout<<*a<<endl;
+
+    for (Lista<Point <int> >::iterator b=puntos.begin();b!=puntos.end();b++){
+        cout<<*b<<" ";
+    }
+    
+
+
     return 0;
 }
