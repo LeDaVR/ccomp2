@@ -1,6 +1,7 @@
 #include <iostream>
 #include "point.h"
 using namespace std;
+<<<<<<< HEAD
 //-----------------------------NODO Y LISTA --------------------------------------------
 template <class T>
 class Nodo;
@@ -13,6 +14,45 @@ ostream& operator <<(ostream& o,Nodo<T>& a){
     o << a.data;
     return o;
 }
+=======
+
+
+template <class T>
+class Point;
+
+template <class T>
+ostream& operator <<(ostream& o,Point<T> p){
+    o<<"("<< p.x <<","<<p.y<<")";
+    return o;
+}
+
+template <class T>
+class Point{
+private:
+    T x,y;
+public:
+    Point(){}
+    Point(T x,T y) {
+        this->x=x;
+        this->y=y;
+    }
+    bool operator <(Point<T>& a){
+        return x<a.x;
+    }
+
+    bool operator ==(Point<T>& a){
+        return (x==a.x && y==a.y);
+    }
+
+    bool operator !=(Point<T>& a){
+        return (x!=a.x || y!=a.y);
+    }
+    friend ostream& operator << <>(ostream& o,Point<T> p);
+};
+
+template <class T>
+class Lista;
+>>>>>>> adabf6aa44fc1c4a2aa24caa2b8e6236c64941d4
 
 template <class T>
 class Nodo{
@@ -24,8 +64,11 @@ class Nodo{
         Nodo(){
             next=NULL;
         }
+<<<<<<< HEAD
         friend ostream& operator << <>(ostream& o,Nodo<T>& a);
 
+=======
+>>>>>>> adabf6aa44fc1c4a2aa24caa2b8e6236c64941d4
 };
 
 template <class T>
